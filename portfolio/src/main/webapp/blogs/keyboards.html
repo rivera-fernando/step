@@ -2,16 +2,22 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Fernando Rivera</title>
+    <title>Keyboards</title>
+    <link rel="stylesheet" href="../icons.css">
     <link rel="stylesheet" href="../materialize.css">
-    <script src="../script.js"></script>
+    <script src="../materialize.js"></script>
   </head>
-  <body>
+  <body onload="updateModeFromCookie()">
     <nav>
     	<div class="nav-wrapper">
             <ul id="nav-mobile" class="left">
                 <li><a href="..">Home</a></li>
                 <li><a href="../blog.html">Blog</a></li>
+            </ul>
+            <ul id="nav-mobile" class="right">
+                <div onclick="changeMode()">
+                    <i class="material-icons">tonality</i>
+                </div>
             </ul>
     	</div>
     </nav>
