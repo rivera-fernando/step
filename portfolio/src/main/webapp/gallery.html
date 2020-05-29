@@ -2,17 +2,24 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Blogs</title>
+    <title>Gallery</title>
     <link rel="stylesheet" href="icons.css">
     <link rel="stylesheet" href="materialize.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="materialize.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.carousel').carousel();
+        });
+  </script>
   </head>
   <body onload="updateModeFromCookie()">
     <nav>
     	<div class="nav-wrapper">
             <ul id="nav-mobile" class="left">
                 <li><a href="..">Home</a></li>
-                <li><a href="#">Blog</a></li>
+                <li><a href="../blog.html">Blog</a></li>
+                <li><a href="#">Gallery</a></li>
             </ul>
             <ul id="nav-mobile" class="right">
                 <div onclick="changeMode()">
