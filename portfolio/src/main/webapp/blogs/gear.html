@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../materialize.css">
     <script src="../materialize.js"></script>
   </head>
-  <body onload="updateModeFromCookie()">
+  <body onload="updateModeFromCookie();getComments()">
     <nav>
     	<div class="nav-wrapper">
             <ul id="nav-mobile" class="left">
@@ -47,6 +47,26 @@
         <p>USB C Hub AUKEY 8-in-1 Type C Hub</p>
         <h5>Backpack</h5>
         <p>Timbuk2 Q Laptop Backpack 2.0</p>
+        <br>
+        <h4>Comments</h4>
+        <h5>Add a Comment</h5>
+
+        <form action="/data" method="POST">
+            <div class="row">
+                <div class="input-field col s12 m10">
+                    <textarea id="textarea1" class="materialize-textarea"></textarea>
+                    <label for="textarea1">Comment</label>
+                </div>
+                <div class="center-align col s12 m2">
+                    <button type="submit" class="btn">Add Comment</button>
+                </div>
+            </div>
+        </form>
+        <h5>Read Comments</h5>
+        <div id="comments">
+
+        </div>
+        <br>
     </div>
     <footer class="page-footer">
         <div class="container">
