@@ -33,6 +33,8 @@ public class DataServlet extends HttpServlet {
   ArrayList<String> comments = new ArrayList<String>();
   GsonBuilder gsonBuilder = new GsonBuilder();
   Gson gson = gsonBuilder.create();
+  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String JSONObject = gson.toJson(comments);
@@ -43,7 +45,9 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = getParameter(request, "text-input", "");
-    comments.add(comment);
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("content", comment);
+    datastore.put(commentEntity);
     response.sendRedirect("../blogs/gear.html");
   }
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
