@@ -12420,11 +12420,8 @@ function getComments() {
     fetch('/data').then(response => response.json()).then((comments) => {
         const commentList = document.getElementById('comments');
         commentList.innerHTML = '';
-        commentList.appendChild(createListElement(comments[0]));
-        commentList.appendChild(createListElement(comments[1]));
-        commentList.appendChild(createListElement(comments[2]));
-
-
+        comments.forEach(function(item){
+            commentList.appendChild(createListElement(item));
+        });
     });
 }
-

@@ -27,17 +27,27 @@ import com.google.gson.GsonBuilder;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
+  ArrayList<String> comments = new ArrayList<String>();
+  GsonBuilder gsonBuilder = new GsonBuilder();
+  Gson gson = gsonBuilder.create();
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    ArrayList<String> comments = new ArrayList<String>();
-    comments.add("Great website!");
-    comments.add("Terrible job...");
-    comments.add("Looking good.");
-    GsonBuilder gsonBuilder = new GsonBuilder();
-    Gson gson = gsonBuilder.create();
     String JSONObject = gson.toJson(comments);
     response.setContentType("application/json;");
     response.getWriter().println(JSONObject);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String comment = getParameter(request, "text-input", "");
+    comments.add(comment);
+    response.sendRedirect("../blogs/gear.html");
+  }
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }
