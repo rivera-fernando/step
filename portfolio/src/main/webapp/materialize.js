@@ -12373,6 +12373,8 @@ $jscomp.polyfill = function (e, r, p, m) {
   Range.init($('input[type=range]'));
 })(cash, M.anime);
 
+
+
 function getCookie(identifier) {
   var name = identifier + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
@@ -12389,7 +12391,6 @@ function getCookie(identifier) {
   return "";
 }
 
-//TODO: look into cookie checking, might break if more cookies are addded
 function updateModeFromCookie() {
   var dark_mode = getCookie("dark");
   if (dark_mode == "yes") {
@@ -12408,3 +12409,22 @@ if (dark_mode == "no") {
   document.cookie = "dark=yes; path=/";
 }
 }
+
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
+
+function getComments() {
+    fetch('/data').then(response => response.json()).then((comments) => {
+        const commentList = document.getElementById('comments');
+        commentList.innerHTML = '';
+        commentList.appendChild(createListElement(comments[0]));
+        commentList.appendChild(createListElement(comments[1]));
+        commentList.appendChild(createListElement(comments[2]));
+
+
+    });
+}
+
