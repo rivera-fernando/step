@@ -56,7 +56,7 @@ public class DataServlet extends HttpServlet {
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("content", comment);
     datastore.put(commentEntity);
-    response.sendRedirect("../blogs/gear.html");
+    response.sendRedirect("./blogs/gear.html");
   }
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
