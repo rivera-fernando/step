@@ -12412,9 +12412,10 @@ if (dark_mode == "no") {
 
 function createListElement(text) {
   const liElement = document.createElement('li');
-  liElement.innerText = text;
+  liElement.innerHTML = text;
   return liElement;
 }
+
 var i;
 var curr_comment = 0;
 function getComments() {
