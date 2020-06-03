@@ -12422,7 +12422,9 @@ function getComments() {
         const commentList = document.getElementById('comments');
         commentList.innerHTML = '';
         for (i = 0; i < 5; i++) {
-            commentList.appendChild(createListElement(comments[i]))
+            if (comments[i] != undefined) {
+                commentList.appendChild(createListElement(comments[i]))
+            }
             curr_comment++;
         }
     });
@@ -12434,9 +12436,7 @@ function getNext() {
         commentList.innerHTML = '';
         var place = curr_comment;
         for (i = place; i < place + 5; i++) {
-            if (comments[i] == undefined) {
-            }
-            else {
+            if (comments[i] != undefined) {
                 commentList.appendChild(createListElement(comments[i]))
             }
             curr_comment++;
@@ -12451,9 +12451,7 @@ fetch('/data').then(response => response.json()).then((comments) => {
         curr_comment = curr_comment - 10;
         var place = curr_comment;
         for (i = place; i < place + 5; i++) {
-            if (comments[i] == undefined) {
-            }
-            else {
+            if (comments[i] != undefined) {
                 commentList.appendChild(createListElement(comments[i]))
             }
             curr_comment++;
