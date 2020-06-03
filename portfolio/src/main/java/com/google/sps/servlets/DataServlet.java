@@ -44,7 +44,9 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
     ArrayList<String> comments1 = new ArrayList<String>();
     for (Entity entity : results.asIterable()) {
-        comments1.add((String) entity.getProperty("content"));
+        String content = (String) entity.getProperty("content");
+        String name = (String) entity.getProperty("name");
+        comments1.add("["+name + "] - " + content);
     }
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(comments1));
@@ -52,9 +54,13 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String first = getParameter(request, "first", "");
+    String last = getParameter(request, "last", "");
+    String name = first + " " + last;
     String comment = getParameter(request, "text-input", "");
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("content", comment);
+    commentEntity.setProperty("name", name);
     datastore.put(commentEntity);
     response.sendRedirect("./blogs/gear.html");
   }

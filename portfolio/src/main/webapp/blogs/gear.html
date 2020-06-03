@@ -52,15 +52,16 @@
         <form action="../data" method="POST">
             <div class="row">
                 <div class="input-field col s12 m2">
-                    <input type="text" id="first">
+                    <input name= "first" type="text" id="first" required="true">
                     <label for="first">First Name</label>
                 </div>
                 <div class="input-field col s12 m2">
-                    <input type="text" id="last">
+                    <input name="last" type="text" id="last" required="true">
                     <label for="last">Last Name</label>
                 </div>
                 <div class="input-field col s12 m7">
-                    <textarea name="text-input" id="textarea1" class="materialize-textarea"></textarea>
+                    <textarea name="text-input" id="textarea1" 
+                    class="materialize-textarea" required="true"></textarea>
                     <label for="textarea1">Comment</label>
                 </div>
                 <div class="center-align col s12 m1">
