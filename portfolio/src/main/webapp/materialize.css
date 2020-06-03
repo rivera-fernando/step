@@ -6201,6 +6201,10 @@ textarea.materialize-textarea {
   transition: box-shadow .3s, border .3s;
   transition: box-shadow .3s, border .3s, -webkit-box-shadow .3s;
 }
+.dark-mode input[type=text]:not(.browser-default),
+.dark-mode textarea.materialize-textarea {
+  color: #ffffff;
+}
 
 input:not([type]):disabled, input:not([type])[readonly="readonly"],
 input[type=text]:not(.browser-default):disabled,
