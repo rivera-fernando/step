@@ -42,7 +42,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("when", SortDirection.DESCENDING);
+    Query query = new Query("Comment").addSort("when", SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
     ArrayList<String> comments1 = new ArrayList<String>();
     for (Entity entity : results.asIterable()) {
