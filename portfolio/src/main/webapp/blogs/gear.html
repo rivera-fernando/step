@@ -49,20 +49,27 @@
         <p>Timbuk2 Q Laptop Backpack 2.0</p>
         <br>
         <h4>Comments</h4>
-        <h5>Add a Comment</h5>
-
         <form action="../data" method="POST">
             <div class="row">
-                <div class="input-field col s12 m8">
+                <div class="input-field col s12 m2">
+                    <input type="text" id="first">
+                    <label for="first">First Name</label>
+                </div>
+                <div class="input-field col s12 m2">
+                    <input type="text" id="last">
+                    <label for="last">Last Name</label>
+                </div>
+                <div class="input-field col s12 m7">
                     <textarea name="text-input" id="textarea1" class="materialize-textarea"></textarea>
                     <label for="textarea1">Comment</label>
                 </div>
-                <div class="center-align col s12 m4">
-                    <button type="submit" class="btn">Add Comment</button>
+                <div class="center-align col s12 m1">
+                    <button type="submit" class="btn">
+                        <i class="material-icons">send</i>
+                    </button>
                 </div>
             </div>
         </form>
-        <h5>Read Comments</h5>
         <div id="comments">
 
         </div>
