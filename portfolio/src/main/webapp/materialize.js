@@ -12423,9 +12423,8 @@ function createParagraphElem(text) {
     return pElement;
 }
 
-var i;
+var comment_set;
 var curr_comment = 0;
-
 var num_comments;
 
 function getComments() {
@@ -12433,10 +12432,10 @@ function getComments() {
         const commentList = document.getElementById('comments');
         commentList.innerHTML = '';
         num_comments = 0;
-        i = 0;
-        for (i; i < 5; i++) {
-            if (comments[i] != undefined) {
-                commentList.appendChild(createListElement(comments[i]));
+        comment_set = 0;
+        for (comment_set; comment_set < 5; comment_set++) {
+            if (comments[comment_set] != undefined) {
+                commentList.appendChild(createListElement(comments[comment_set]));
             }
             curr_comment++;
         }
@@ -12453,9 +12452,9 @@ function getNext() {
         const commentList = document.getElementById('comments');
         commentList.innerHTML = '';
         var place = curr_comment;
-        for (i = place; i < place + 5; i++) {
-            if (comments[i] != undefined) {
-                commentList.appendChild(createListElement(comments[i]))
+        for (comment_set = place; comment_set < place + 5; comment_set++) {
+            if (comments[comment_set] != undefined) {
+                commentList.appendChild(createListElement(comments[comment_set]))
             }
             curr_comment++;
         }
@@ -12469,9 +12468,9 @@ fetch('/data').then(response => response.json()).then((comments) => {
         commentList.innerHTML = '';
         curr_comment = curr_comment - 10;
         var place = curr_comment;
-        for (i = place; i < place + 5; i++) {
-            if (comments[i] != undefined) {
-                commentList.appendChild(createListElement(comments[i]))
+        for (comment_set = place; comment_set < place + 5; comment_set++) {
+            if (comments[comment_set] != undefined) {
+                commentList.appendChild(createListElement(comments[comment_set]))
             }
             curr_comment++;
         }
@@ -12481,7 +12480,7 @@ fetch('/data').then(response => response.json()).then((comments) => {
 
 function checkPrev() {
     button_left = document.getElementById('nav-pag1');
-    if (i <= 5) {
+    if (comment_set <= 5) {
         button_left.className = "btn waves-effect disabled";
     }
     else {
@@ -12491,7 +12490,7 @@ function checkPrev() {
 
 function checkNext() {
     button_right = document.getElementById('nav-pag2');
-    if (i >= num_comments) {
+    if (comment_set >= num_comments) {
         button_right.className = "btn waves-effect disabled";
     }
     else {
@@ -12500,7 +12499,7 @@ function checkNext() {
 }
 
 function runChecks(commentList) {
-    var descriptor = "Page " + Math.ceil(i/5) + " of " + Math.ceil(num_comments/5);
+    var descriptor = "Page " + Math.ceil(comment_set/5) + " of " + Math.ceil(num_comments/5);
     commentList.appendChild(createParagraphElem(descriptor));
     checkPrev();
     checkNext();
