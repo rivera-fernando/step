@@ -12412,35 +12412,71 @@ if (dark_mode == "no") {
 
 function createListElement(text) {
   const liElement = document.createElement('li');
-  liElement.innerText = text;
+  const button = document.createElement('button');
+  const icon = document.createElement('i');
+  icon.className = "material-icons";
+  icon.innerText = "cancel";
+  button.className = "btn-small";
+  button.appendChild(icon);
+  button.addEventListener('click', () => {
+      deleteComm(text);
+      location.reload();
+  });
+  liElement.appendChild(button)
+  liElement.insertAdjacentText("beforeend", text);
   return liElement;
 }
-var i;
+
+function deleteComm(text) {
+    const params = new URLSearchParams();
+    params.append('text', text);
+    fetch("/deleteOne", {
+        method: "POST", 
+        body: params
+    });
+}
+
+function createParagraphElem(text) {
+    const pElement = document.createElement('p');
+    pElement.innerText = text;
+    return pElement;
+}
+
+var comment_set;
 var curr_comment = 0;
+var num_comments;
+var max_comments = 5;
+
 function getComments() {
     fetch('/data').then(response => response.json()).then((comments) => {
         const commentList = document.getElementById('comments');
         commentList.innerHTML = '';
-        for (i = 0; i < 5; i++) {
-            if (comments[i] != undefined) {
-                commentList.appendChild(createListElement(comments[i]))
+        num_comments = 0;
+        comment_set = 0;
+        for (comment_set; comment_set < max_comments; comment_set++) {
+            if (comments[comment_set] != undefined) {
+                commentList.appendChild(createListElement(comments[comment_set]));
             }
             curr_comment++;
         }
+        num_comments = comments.length;
+        runChecks(commentList);
     });
 }
+
 
 function getNext() {
     fetch('/data').then(response => response.json()).then((comments) => {
         const commentList = document.getElementById('comments');
         commentList.innerHTML = '';
         var place = curr_comment;
-        for (i = place; i < place + 5; i++) {
-            if (comments[i] != undefined) {
-                commentList.appendChild(createListElement(comments[i]))
+        for (comment_set = place; comment_set < place + max_comments; comment_set++) {
+            if (comments[comment_set] != undefined) {
+                commentList.appendChild(createListElement(comments[comment_set]))
             }
             curr_comment++;
         }
+        runChecks(commentList);
     });
 }
 
@@ -12450,11 +12486,39 @@ fetch('/data').then(response => response.json()).then((comments) => {
         commentList.innerHTML = '';
         curr_comment = curr_comment - 10;
         var place = curr_comment;
-        for (i = place; i < place + 5; i++) {
-            if (comments[i] != undefined) {
-                commentList.appendChild(createListElement(comments[i]))
+        for (comment_set = place; comment_set < place + max_comments; comment_set++) {
+            if (comments[comment_set] != undefined) {
+                commentList.appendChild(createListElement(comments[comment_set]))
             }
             curr_comment++;
         }
+        runChecks(commentList);
     });
+}
+
+function checkPrev() {
+    button_left = document.getElementById('nav-pag1');
+    if (comment_set <= max_comments) {
+        button_left.className = "btn waves-effect disabled";
+    }
+    else {
+        button_left.className = "btn waves-effect";
+    }
+}
+
+function checkNext() {
+    button_right = document.getElementById('nav-pag2');
+    if (comment_set >= num_comments) {
+        button_right.className = "btn waves-effect disabled";
+    }
+    else {
+        button_right.className = "btn waves-effect";
+    }
+}
+
+function runChecks(commentList) {
+    var descriptor = "Page " + Math.ceil(comment_set/max_comments) + " of " + Math.ceil(num_comments/max_comments);
+    commentList.appendChild(createParagraphElem(descriptor));
+    checkPrev();
+    checkNext();
 }
