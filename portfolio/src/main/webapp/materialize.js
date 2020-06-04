@@ -12412,9 +12412,29 @@ if (dark_mode == "no") {
 
 function createListElement(text) {
   const liElement = document.createElement('li');
-  text = "\t" + text;
-  liElement.innerHTML = "<button onclick=\"deleteComm()\" class=\"btn-small\"><i class=\"material-icons\">cancel</i></button>" + text;
+  text = text;
+  const button = document.createElement('button');
+  const icon = document.createElement('i');
+  icon.className = "material-icons";
+  icon.innerText = "cancel";
+  button.className = "btn-small";
+  button.appendChild(icon);
+  button.addEventListener('click', () => {
+      deleteComm(text);
+      location.reload();
+  });
+  liElement.appendChild(button)
+  liElement.insertAdjacentText("beforeend", text);
   return liElement;
+}
+
+function deleteComm(text) {
+    const params = new URLSearchParams();
+    params.append('text', text);
+    fetch("/deleteOne", {
+        method: "POST", 
+        body: params
+    });
 }
 
 function createParagraphElem(text) {
