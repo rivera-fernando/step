@@ -12412,7 +12412,7 @@ if (dark_mode == "no") {
 
 function createListElement(text) {
   const liElement = document.createElement('li');
-  text = "    " + text;
+  text = "\t" + text;
   liElement.innerHTML = "<button onclick=\"deleteComm()\" class=\"btn-small\"><i class=\"material-icons\">cancel</i></button>" + text;
   return liElement;
 }
