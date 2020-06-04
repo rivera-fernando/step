@@ -12412,7 +12412,6 @@ if (dark_mode == "no") {
 
 function createListElement(text) {
   const liElement = document.createElement('li');
-  text = text;
   const button = document.createElement('button');
   const icon = document.createElement('i');
   icon.className = "material-icons";
