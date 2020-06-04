@@ -12412,24 +12412,50 @@ if (dark_mode == "no") {
 
 function createListElement(text) {
   const liElement = document.createElement('li');
-  liElement.innerHTML = text;
+  text = "    " + text;
+  liElement.innerHTML = "<button onclick=\"deleteComm()\" class=\"btn-small\"><i class=\"material-icons\">cancel</i></button>" + text;
   return liElement;
 }
 
+function createParagraphElem(text) {
+    const pElement = document.createElement('p');
+    pElement.innerText = text;
+    return pElement;
+}
+
+//function deleteComm(comment) {
+//    const params = new URLSearchParams();
+//    params.append('id', )
+//}
+
 var i;
 var curr_comment = 0;
+
+var num_comments;
+
 function getComments() {
     fetch('/data').then(response => response.json()).then((comments) => {
         const commentList = document.getElementById('comments');
         commentList.innerHTML = '';
-        for (i = 0; i < 5; i++) {
+        num_comments = 0;
+        i = 0;
+        for (i; i < 5; i++) {
             if (comments[i] != undefined) {
-                commentList.appendChild(createListElement(comments[i]))
+                commentList.appendChild(createListElement(comments[i]));
             }
             curr_comment++;
         }
+        while (comments[num_comments] != undefined) {
+            num_comments++;
+        }
+        var descriptor = "Page " + Math.ceil(i/5) + " of " + Math.ceil(num_comments/5);
+        commentList.appendChild(createParagraphElem(descriptor));
+        checkPrev();
+        checkNext();
+
     });
 }
+
 
 function getNext() {
     fetch('/data').then(response => response.json()).then((comments) => {
@@ -12442,6 +12468,10 @@ function getNext() {
             }
             curr_comment++;
         }
+        var descriptor = "Page " + Math.ceil(i/5) + " of " + Math.ceil(num_comments/5);
+        commentList.appendChild(createParagraphElem(descriptor));
+        checkPrev();
+        checkNext();
     });
 }
 
@@ -12457,5 +12487,29 @@ fetch('/data').then(response => response.json()).then((comments) => {
             }
             curr_comment++;
         }
+        var descriptor = "Page " + Math.ceil(i/5) + " of " + Math.ceil(num_comments/5);
+        commentList.appendChild(createParagraphElem(descriptor));
+        checkPrev();
+        checkNext();
     });
+}
+
+function checkPrev() {
+    button_left = document.getElementById('nav-pag1');
+    if (i <= 5) {
+        button_left.className = "btn waves-effect disabled";
+    }
+    else {
+        button_left.className = "btn waves-effect";
+    }
+}
+
+function checkNext() {
+    button_right = document.getElementById('nav-pag2');
+    if (i >= num_comments) {
+        button_right.className = "btn waves-effect disabled";
+    }
+    else {
+        button_right.className = "btn waves-effect";
+    }
 }
