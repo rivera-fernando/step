@@ -12423,11 +12423,6 @@ function createParagraphElem(text) {
     return pElement;
 }
 
-//function deleteComm(comment) {
-//    const params = new URLSearchParams();
-//    params.append('id', )
-//}
-
 var i;
 var curr_comment = 0;
 
@@ -12448,11 +12443,7 @@ function getComments() {
         while (comments[num_comments] != undefined) {
             num_comments++;
         }
-        var descriptor = "Page " + Math.ceil(i/5) + " of " + Math.ceil(num_comments/5);
-        commentList.appendChild(createParagraphElem(descriptor));
-        checkPrev();
-        checkNext();
-
+        runChecks(commentList);
     });
 }
 
@@ -12468,10 +12459,7 @@ function getNext() {
             }
             curr_comment++;
         }
-        var descriptor = "Page " + Math.ceil(i/5) + " of " + Math.ceil(num_comments/5);
-        commentList.appendChild(createParagraphElem(descriptor));
-        checkPrev();
-        checkNext();
+        runChecks(commentList);
     });
 }
 
@@ -12487,10 +12475,7 @@ fetch('/data').then(response => response.json()).then((comments) => {
             }
             curr_comment++;
         }
-        var descriptor = "Page " + Math.ceil(i/5) + " of " + Math.ceil(num_comments/5);
-        commentList.appendChild(createParagraphElem(descriptor));
-        checkPrev();
-        checkNext();
+        runChecks(commentList);
     });
 }
 
@@ -12512,4 +12497,11 @@ function checkNext() {
     else {
         button_right.className = "btn waves-effect";
     }
+}
+
+function runChecks(commentList) {
+    var descriptor = "Page " + Math.ceil(i/5) + " of " + Math.ceil(num_comments/5);
+    commentList.appendChild(createParagraphElem(descriptor));
+    checkPrev();
+    checkNext();
 }
