@@ -12445,6 +12445,7 @@ function createParagraphElem(text) {
 var comment_set;
 var curr_comment = 0;
 var num_comments;
+var max_comments = 5;
 
 function getComments() {
     fetch('/data').then(response => response.json()).then((comments) => {
@@ -12452,15 +12453,13 @@ function getComments() {
         commentList.innerHTML = '';
         num_comments = 0;
         comment_set = 0;
-        for (comment_set; comment_set < 5; comment_set++) {
+        for (comment_set; comment_set < max_comments; comment_set++) {
             if (comments[comment_set] != undefined) {
                 commentList.appendChild(createListElement(comments[comment_set]));
             }
             curr_comment++;
         }
-        while (comments[num_comments] != undefined) {
-            num_comments++;
-        }
+        num_comments = comments.length;
         runChecks(commentList);
     });
 }
@@ -12471,7 +12470,7 @@ function getNext() {
         const commentList = document.getElementById('comments');
         commentList.innerHTML = '';
         var place = curr_comment;
-        for (comment_set = place; comment_set < place + 5; comment_set++) {
+        for (comment_set = place; comment_set < place + max_comments; comment_set++) {
             if (comments[comment_set] != undefined) {
                 commentList.appendChild(createListElement(comments[comment_set]))
             }
@@ -12487,7 +12486,7 @@ fetch('/data').then(response => response.json()).then((comments) => {
         commentList.innerHTML = '';
         curr_comment = curr_comment - 10;
         var place = curr_comment;
-        for (comment_set = place; comment_set < place + 5; comment_set++) {
+        for (comment_set = place; comment_set < place + max_comments; comment_set++) {
             if (comments[comment_set] != undefined) {
                 commentList.appendChild(createListElement(comments[comment_set]))
             }
@@ -12499,7 +12498,7 @@ fetch('/data').then(response => response.json()).then((comments) => {
 
 function checkPrev() {
     button_left = document.getElementById('nav-pag1');
-    if (comment_set <= 5) {
+    if (comment_set <= max_comments) {
         button_left.className = "btn waves-effect disabled";
     }
     else {
@@ -12518,7 +12517,7 @@ function checkNext() {
 }
 
 function runChecks(commentList) {
-    var descriptor = "Page " + Math.ceil(comment_set/5) + " of " + Math.ceil(num_comments/5);
+    var descriptor = "Page " + Math.ceil(comment_set/max_comments) + " of " + Math.ceil(num_comments/max_comments);
     commentList.appendChild(createParagraphElem(descriptor));
     checkPrev();
     checkNext();
