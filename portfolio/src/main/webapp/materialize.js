@@ -12418,22 +12418,26 @@ function createListElement(text) {
   icon.innerText = "cancel";
   button.className = "btn-small";
   button.appendChild(icon);
+  button.style.padding = "0px 7px";
   button.addEventListener('click', () => {
-      deleteComm(text);
-      location.reload();
+      deleteReload(text, button);
   });
   liElement.appendChild(button)
   liElement.insertAdjacentText("beforeend", text);
   return liElement;
 }
 
-function deleteComm(text) {
-    const params = new URLSearchParams();
-    params.append('text', text);
-    fetch("/deleteOne", {
+async function deleteReload(text, button) {
+    button.parentNode.remove();
+    (async () => {
+        const params = new URLSearchParams();
+        params.append('text', text);
+        const res = await fetch("/deleteOne", {
         method: "POST", 
         body: params
-    });
+        });
+        getComments();
+    })();
 }
 
 function createParagraphElem(text) {
@@ -12521,4 +12525,24 @@ function runChecks(commentList) {
     commentList.appendChild(createParagraphElem(descriptor));
     checkPrev();
     checkNext();
+}
+
+async function sendComment() {
+    f_name = document.getElementById('first').value;
+    l_name = document.getElementById('last').value;
+    comm = document.getElementById('textarea1').value;
+    (async () => {
+        const params = new URLSearchParams();
+        params.append('first', f_name);
+        params.append('last', l_name);
+        params.append('text-input', comm);
+        const res = await fetch("/data", {
+        method: "POST", 
+        body: params
+        });
+        document.getElementById('first').value = '';
+        document.getElementById('last').value = '';
+        document.getElementById('textarea1').value = '';
+        getComments();
+    })();
 }

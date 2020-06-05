@@ -68,7 +68,7 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("name", name);
     commentEntity.setProperty("when", date);
     datastore.put(commentEntity);
-    response.sendRedirect("./blogs/gear.html");
+    return;
   }
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
