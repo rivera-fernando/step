@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../materialize.css">
     <script src="../materialize.js"></script>
   </head>
-  <body onload="updateModeFromCookie();getComments()">
+  <body onload="updateModeFromCookie();getComments();">
     <nav>
     	<div class="nav-wrapper">
             <ul id="nav-mobile" class="left">
@@ -51,7 +51,8 @@
         <hr>
         <br>
         <h4>Comment Section</h4>
-            <div class="row">
+          <p>Be sure to sign in before leaving a comment!</p>
+            <div class="row" id="form">
                 <div class="input-field col s6 m2">
                     <input name= "first" type="text" id="first" required="true">
                     <label for="first">First Name</label>
@@ -73,7 +74,7 @@
             </div>
         <div id="comments">
         </div>
-        <ul class="pagination">
+        <ul class="pagination" id='page'>
             <li><button id="nav-pag1" class="btn waves-effect" onclick="getPrev()"><i class="material-icons">chevron_left</i></button></li>
             <li><button id="nav-pag2" class="btn waves-effect" onclick="getNext()"><i class="material-icons">chevron_right</i></button></li>
             <li> <form action="../delete" method="POST"> <button type="submit" class="btn disabled">Delete All</button> </form></li>

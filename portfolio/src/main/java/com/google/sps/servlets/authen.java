@@ -39,26 +39,29 @@ import com.google.gson.GsonBuilder;
 
 @WebServlet("/authen")
 public class authen extends HttpServlet {
-  
+  GsonBuilder gsonBuilder = new GsonBuilder();
+  Gson gson = gsonBuilder.create();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html");
-
+    response.setContentType("application/json;");
     UserService userService = UserServiceFactory.getUserService();
+    ArrayList<String> loggedIn = new ArrayList<String>();
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail();
-      String urlToRedirectToAfterUserLogsOut = "/";
+      String urlToRedirectToAfterUserLogsOut = "/blogs/gear.html";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
-
-      response.getWriter().println("<p>Hello " + userEmail + "!</p>");
-      response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
+      loggedIn.add("yes");
+      loggedIn.add(logoutUrl);
+      
+      response.getWriter().println(gson.toJson(loggedIn));
     } else {
-      String urlToRedirectToAfterUserLogsIn = "/";
+      String urlToRedirectToAfterUserLogsIn = "/blogs/gear.html";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
+      loggedIn.add("no");
+      loggedIn.add(loginUrl);
 
-      response.getWriter().println("<p>Hello stranger.</p>");
-      response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
+      response.getWriter().println(gson.toJson(loggedIn));
     }
   }
 }

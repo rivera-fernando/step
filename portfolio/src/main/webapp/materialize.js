@@ -12373,7 +12373,7 @@ $jscomp.polyfill = function (e, r, p, m) {
   Range.init($('input[type=range]'));
 })(cash, M.anime);
 
-
+/////////////////////////////////////////////////////////////////////
 
 function getCookie(identifier) {
   var name = identifier + "=";
@@ -12465,6 +12465,7 @@ function getComments() {
         }
         num_comments = comments.length;
         runChecks(commentList);
+        displayForm();
     });
 }
 
@@ -12545,4 +12546,73 @@ async function sendComment() {
         document.getElementById('textarea1').value = '';
         getComments();
     })();
+}
+
+function displayForm() {
+    fetch('/authen').then(response => response.json()).then((loggedIn) => {
+        const commentForm = document.getElementById('form');
+        if (loggedIn[0] == "no") {
+            commentForm.style.display = "none";
+        }
+        console.log('form has been either hidden or not changed');
+        delCommentButtons(loggedIn);
+    });
+}
+
+async function delCommentButtons(loggedIn) {
+    console.log('changing the buttons function has been called, pre await');
+    console.log('post await');
+    const button = document.createElement('button');    
+    button.className = "btn waves-effect";
+    button.addEventListener('click', () => {
+        window.location.href = loggedIn[1];
+    });
+    if (loggedIn[0] == "no") {
+        button.innerText = "Sign In";
+        const deleteButtons = document.getElementsByClassName('btn-small');
+        for (var i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].style.display = "none"; //maybe change to just disabled
+        }
+    }
+    else {
+        button.innerText = "Sign Out";
+    }
+    document.getElementById('page').appendChild(button);
+    
+
+
+}
+
+async function displayCommSect() {
+    fetch('/authen').then(response => response.json()).then((loggedIn) => {
+        const commentSubmit = document.getElementById('form');
+        if (loggedIn[0] == "no") {
+            commentSubmit.style.display = "none";
+            (async () => {
+                await new Promise(r => setTimeout(r, 2000));
+                const deleteButtons = document.getElementsByClassName('btn-small');
+                for (var i = 0; i < deleteButtons.length; i++) {
+                    deleteButtons[i].style.display = "none";
+                }
+                const button = document.createElement('button');    
+                button.className = "btn waves-effect";
+                button.addEventListener('click', () => {
+                    window.location.href = loggedIn[1];
+                });
+                button.innerText = "Sign In";
+                document.getElementById('page').appendChild(button)
+            })();
+            
+        }
+        else {
+            const button = document.createElement('button');    
+            button.className = "btn waves-effect";
+            button.addEventListener('click', () => {
+                window.location.href = loggedIn[1];
+            });
+            button.innerText = "Sign Out";
+            document.getElementById('page').appendChild(button)
+        }
+
+    });
 }
