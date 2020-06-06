@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../materialize.css">
     <script src="../materialize.js"></script>
   </head>
-  <body onload="updateModeFromCookie();getComments();">
+  <body onload="updateModeFromCookie();getComments();signButton()">
     <nav>
     	<div class="nav-wrapper">
             <ul id="nav-mobile" class="left">
@@ -51,7 +51,8 @@
         <hr>
         <br>
         <h4>Comment Section</h4>
-          <p>Be sure to sign in before leaving a comment!</p>
+          <p>Be sure to sign in if you want to leave a comment!</p>
+          <br>
             <div class="row" id="form">
                 <div class="input-field col s6 m2">
                     <input name= "first" type="text" id="first" required="true">
