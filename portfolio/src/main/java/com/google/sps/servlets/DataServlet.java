@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -41,6 +43,7 @@ public class DataServlet extends HttpServlet {
   GsonBuilder gsonBuilder = new GsonBuilder();
   Gson gson = gsonBuilder.create();
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  UserService userService = UserServiceFactory.getUserService();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -50,7 +53,9 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
         String content = (String) entity.getProperty("content");
         String name = (String) entity.getProperty("name");
-        comments1.add("[" + name + "] - " + content);
+        String email = (String) entity.getProperty("email");
+        comments1.add("[" + name + " - " + email + "] - " + content);
+        //comments1.add(email);
     }
     response.setContentType("application/json;");
     response.getWriter().println(gson.toJson(comments1));
@@ -63,10 +68,12 @@ public class DataServlet extends HttpServlet {
     String name = first + " " + last;
     String comment = getParameter(request, "text-input", "");
     java.util.Date date=new java.util.Date();  
+    String email = userService.getCurrentUser().getEmail();
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("content", comment);
     commentEntity.setProperty("name", name);
     commentEntity.setProperty("when", date);
+    commentEntity.setProperty("email", email);
     //add a property that is the signed in persons email, this will only be possible if the person is
     //actually signed in so it should not be a problem
     datastore.put(commentEntity);

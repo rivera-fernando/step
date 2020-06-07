@@ -12425,11 +12425,13 @@ function createListElement(text) {
   //only append button if you are actually signed in!
   fetch('/authen').then(response => response.json()).then((loggedIn) => {
         const commentForm = document.getElementById('form');
-        if (loggedIn[0] == "yes") {
-            liElement.appendChild(button);
+        if (loggedIn[3] == "no-email") {
             liElement.insertAdjacentText("beforeend", text);
         }
         else {
+            if (text.includes(loggedIn[3])) {
+                liElement.appendChild(button);
+            }
             liElement.insertAdjacentText("beforeend", text);
         }
     });
@@ -12473,7 +12475,6 @@ function getComments() {
         }
         num_comments = comments.length;
         runChecks(commentList);
-        displayForm();
     });
 }
 

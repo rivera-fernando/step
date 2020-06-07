@@ -57,6 +57,7 @@ public class authen extends HttpServlet {
           loggedIn.add("admin");
       }
       loggedIn.add("not admin");
+      loggedIn.add(userEmail);
       
       response.getWriter().println(gson.toJson(loggedIn));
     } else {
@@ -65,7 +66,7 @@ public class authen extends HttpServlet {
       loggedIn.add("no");
       loggedIn.add(loginUrl);
       loggedIn.add("not admin");
-
+      loggedIn.add("no-email");
       response.getWriter().println(gson.toJson(loggedIn));
     }
   }
