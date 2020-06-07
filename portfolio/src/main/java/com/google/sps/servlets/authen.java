@@ -53,6 +53,10 @@ public class authen extends HttpServlet {
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
       loggedIn.add("yes");
       loggedIn.add(logoutUrl);
+      if(userService.isUserAdmin()) {
+          loggedIn.add("admin");
+      }
+      loggedIn.add("not admin");
       
       response.getWriter().println(gson.toJson(loggedIn));
     } else {
@@ -60,6 +64,7 @@ public class authen extends HttpServlet {
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
       loggedIn.add("no");
       loggedIn.add(loginUrl);
+      loggedIn.add("not admin");
 
       response.getWriter().println(gson.toJson(loggedIn));
     }

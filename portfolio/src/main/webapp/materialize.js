@@ -12420,7 +12420,7 @@ function createListElement(text) {
   button.appendChild(icon);
   button.style.padding = "0px 7px";
   button.addEventListener('click', () => {
-      deleteReload(text, button);
+      deleteReload(text);
   });
   //only append button if you are actually signed in!
   fetch('/authen').then(response => response.json()).then((loggedIn) => {
@@ -12436,8 +12436,7 @@ function createListElement(text) {
   return liElement;
 }
 
-async function deleteReload(text, button) {
-    button.parentNode.remove();
+async function deleteReload(text) {
     (async () => {
         const params = new URLSearchParams();
         params.append('text', text);
@@ -12561,8 +12560,8 @@ async function sendComment() {
 function displayForm() {
     fetch('/authen').then(response => response.json()).then((loggedIn) => {
         const commentForm = document.getElementById('form');
-        if (loggedIn[0] == "no") {
-            commentForm.style.display = "none";
+        if (loggedIn[0] == "yes") {
+            commentForm.style.display = "inline";
         }
     });
 }
@@ -12591,4 +12590,14 @@ async function delCommentButtons(loggedIn) {
             deleteButtons[i].style.display = "none"; //maybe change to just disabled
         }
     }
+}
+
+function adminCheck() {
+    fetch('/authen').then(response => response.json()).then((loggedIn) => {
+        const commentForm = document.getElementById('form');
+        if (loggedIn[2] == "admin") {
+            console.log("hey im an admin");
+            document.getElementById('del-all').className = 'btn';
+        }
+    });
 }

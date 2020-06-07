@@ -67,6 +67,8 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("content", comment);
     commentEntity.setProperty("name", name);
     commentEntity.setProperty("when", date);
+    //add a property that is the signed in persons email, this will only be possible if the person is
+    //actually signed in so it should not be a problem
     datastore.put(commentEntity);
     return;
   }
