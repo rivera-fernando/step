@@ -12425,15 +12425,13 @@ function createListElement(text) {
   //only append button if you are actually signed in!
   fetch('/authen').then(response => response.json()).then((loggedIn) => {
         const commentForm = document.getElementById('form');
-        if (loggedIn[3] == "no-email") {
-            liElement.insertAdjacentText("beforeend", text);
+        if (loggedIn[2] == "admin") {
+            liElement.appendChild(button);
         }
-        else {
-            if (text.includes(loggedIn[3])) {
-                liElement.appendChild(button);
-            }
-            liElement.insertAdjacentText("beforeend", text);
+        else if (text.slice(0, text.indexOf("]")).includes(loggedIn[3])) {
+            liElement.appendChild(button);
         }
+        liElement.insertAdjacentText("beforeend", text);
     });
   return liElement;
 }
@@ -12598,7 +12596,9 @@ function adminCheck() {
         const commentForm = document.getElementById('form');
         if (loggedIn[2] == "admin") {
             console.log("hey im an admin");
-            document.getElementById('del-all').className = 'btn';
+            document.getElementById('del-all').className = 'btn'; //instead of this
+            //do not have the button in original html, create it here
+            //and check in deleteAll
         }
     });
 }

@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -36,13 +38,16 @@ import com.google.gson.GsonBuilder;
 
 @WebServlet("/delete")
 public class deleteAll extends HttpServlet{
+    UserService userService = UserServiceFactory.getUserService();
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Query query = new Query("Comment");
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
-        for (Entity entity : results.asIterable()) {
+        if (userService.isUserAdmin()) {
+            for (Entity entity : results.asIterable()) {
             Key key = entity.getKey();
             datastore.delete(key);
+            }
         }
         response.sendRedirect("./blogs/gear.html");
     }
