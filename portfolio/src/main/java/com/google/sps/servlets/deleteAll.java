@@ -43,7 +43,7 @@ public class deleteAll extends HttpServlet{
         Query query = new Query("Comment");
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
-        if (userService.isUserAdmin()) {
+        if (userService.isUserLoggedIn() && userService.isUserAdmin()) {
             for (Entity entity : results.asIterable()) {
             Key key = entity.getKey();
             datastore.delete(key);

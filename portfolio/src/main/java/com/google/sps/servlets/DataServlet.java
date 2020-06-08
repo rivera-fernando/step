@@ -65,7 +65,7 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String first = getParameter(request, "first", "");
     String last = getParameter(request, "last", "");
-    String name = first + " " + last;
+    String name = first + " " + last.charAt(0) + ".";
     String comment = getParameter(request, "text-input", "");
     java.util.Date date=new java.util.Date();  
     String email = userService.getCurrentUser().getEmail();
