@@ -12610,11 +12610,11 @@ function createMap() {
 }
 
 function initMap() {
-    // Styles a map in night mode.
-    var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 40.100602, lng: -97.350521},
-        zoom: 4,
-        styles: [
+        // Styles a map in night mode.
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 40.100602, lng: -97.350521},
+          zoom: 4,
+          styles: [
             {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
             {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
             {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
@@ -12696,3 +12696,28 @@ function initMap() {
           ]
         });
       }
+
+function populateMap() {
+  var dark_mode = getCookie("dark");
+  if (dark_mode == "yes") {
+    initMap();
+    document.body.classList.toggle("dark-mode");
+  }
+  else {
+      createMap();
+  }
+}
+function changeMap() {
+document.body.classList.toggle("dark-mode");
+var dark_mode = getCookie("dark");
+if (dark_mode == "no") {
+  initMap()
+  document.cookie = "dark=yes; path=/";
+} else if (dark_mode == "yes"){
+  createMap();
+  document.cookie = "dark=no; path=/";
+} else {
+  initMap();
+  document.cookie = "dark=yes; path=/";
+}
+}

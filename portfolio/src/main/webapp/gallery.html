@@ -15,7 +15,7 @@
         });
     </script>
   </head>
-  <body onload="updateModeFromCookie();initMap()">
+  <body onload="populateMap()">
     <nav>
     	<div class="nav-wrapper">
             <ul id="nav-mobile" class="left">
@@ -24,7 +24,7 @@
                 <li><a href="#">Gallery</a></li>
             </ul>
             <ul id="nav-mobile" class="right">
-                <div onclick="changeMode()">
+                <div onclick="changeMap()">
                     <i class="material-icons">tonality</i>
                 </div>
             </ul>
