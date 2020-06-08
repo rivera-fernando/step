@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="icons.css">
     <link rel="stylesheet" href="materialize.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBlmRwlWvgJd-DmNOc0X2MZZx-bjcoXpxA"></script>
     <script src="materialize.js"></script>
     <script>
         $(document).ready(function(){
@@ -14,7 +15,7 @@
         });
     </script>
   </head>
-  <body onload="updateModeFromCookie()">
+  <body onload="populateMap()">
     <nav>
     	<div class="nav-wrapper">
             <ul id="nav-mobile" class="left">
@@ -23,7 +24,7 @@
                 <li><a href="#">Gallery</a></li>
             </ul>
             <ul id="nav-mobile" class="right">
-                <div onclick="changeMode()">
+                <div onclick="changeMap()">
                     <i class="material-icons">tonality</i>
                 </div>
             </ul>
@@ -142,6 +143,11 @@
                     <img class="lazy" style="object-fit: scale-down;" width="150" height="200"src="./gallery_thumb/uf-5.jpg"></a>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <h4>Picture Locations</h4>
+            <p>These are some of the places the pictures were taken. Mostly generic, not exhaustive.</p>
+            <div id="map" class="col s12"></div>
         </div>
     </div>
     <footer class="page-footer">

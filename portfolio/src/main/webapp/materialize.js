@@ -12373,7 +12373,7 @@ $jscomp.polyfill = function (e, r, p, m) {
   Range.init($('input[type=range]'));
 })(cash, M.anime);
 
-
+/////////////////////////////////////////////////////////////////////
 
 function getCookie(identifier) {
   var name = identifier + "=";
@@ -12420,15 +12420,23 @@ function createListElement(text) {
   button.appendChild(icon);
   button.style.padding = "0px 7px";
   button.addEventListener('click', () => {
-      deleteReload(text, button);
+      deleteReload(text);
   });
-  liElement.appendChild(button)
-  liElement.insertAdjacentText("beforeend", text);
+  //only append button if you are actually signed in!
+  fetch('/authen').then(response => response.json()).then((loggedIn) => {
+        const commentForm = document.getElementById('form');
+        if (loggedIn[2] == "admin") {
+            liElement.appendChild(button);
+        }
+        else if (text.slice(0, text.indexOf("]")).includes(loggedIn[3])) {
+            liElement.appendChild(button);
+        }
+        liElement.insertAdjacentText("beforeend", text);
+    });
   return liElement;
 }
 
-async function deleteReload(text, button) {
-    button.parentNode.remove();
+async function deleteReload(text) {
     (async () => {
         const params = new URLSearchParams();
         params.append('text', text);
@@ -12525,6 +12533,7 @@ function runChecks(commentList) {
     commentList.appendChild(createParagraphElem(descriptor));
     checkPrev();
     checkNext();
+    displayForm();
 }
 
 async function sendComment() {
@@ -12545,4 +12554,206 @@ async function sendComment() {
         document.getElementById('textarea1').value = '';
         getComments();
     })();
+}
+
+function displayForm() {
+    fetch('/authen').then(response => response.json()).then((loggedIn) => {
+        const commentForm = document.getElementById('form');
+        if (loggedIn[0] == "yes") {
+            commentForm.style.display = "inline";
+        }
+    });
+}
+
+function signButton() {
+    fetch('/authen').then(response => response.json()).then((loggedIn) => {
+        const button = document.createElement('button');
+        button.className = "btn waves-effect";
+        button.addEventListener('click', () => {
+            window.location.href = loggedIn[1];
+        });
+        if (loggedIn[0] == "no") {
+            button.innerText = "Sign In";
+        }
+        else {
+            button.innerText = "Sign Out";
+        }
+        document.getElementById('page').appendChild(button);
+    });
+}
+
+async function delCommentButtons(loggedIn) {
+    if (loggedIn[0] == "no") {
+        const deleteButtons = document.getElementsByClassName('btn-small');
+        for (var i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].style.display = "none"; //maybe change to just disabled
+        }
+    }
+}
+
+function adminCheck() {
+    fetch('/authen').then(response => response.json()).then((loggedIn) => {
+        const commentForm = document.getElementById('form');
+        if (loggedIn[2] == "admin") {
+            console.log("hey im an admin");
+            document.getElementById('del-all').className = 'btn'; //instead of this
+            //do not have the button in original html, create it here
+            //and check in deleteAll
+        }
+    });
+}
+
+var golden_gate = {lat: 37.808749, lng: -122.471793};
+var yosemite = {lat: 37.723836, lng: -119.700605};
+var yosemite1 = {lat: 37.738882, lng: -119.595130};
+var verm = {lat: 43.161957, lng: -73.064958};
+var busch = {lat: 28.036782, lng: -82.421327};
+var morikami = {lat: 26.427742, lng: -80.156718};
+var chicago = {lat: 41.882660, lng: -87.623127};
+var pitt = {lat: 40.443210, lng: -79.943874};
+var ny = {lat: 40.746337, lng: -73.985371};
+var cornell = {lat: 42.451949, lng: -76.480110};
+var uf = {lat: 29.648365, lng: -82.343895};
+
+function createMap() {
+  const map = new google.maps.Map(
+      document.getElementById('map'),
+      {center: {lat: 40.100602, lng: -97.350521}, zoom: 4});
+      var marker = new google.maps.Marker({position: golden_gate, map: map});
+      var marker = new google.maps.Marker({position: yosemite, map: map});
+      var marker = new google.maps.Marker({position: yosemite1, map: map});
+      var marker = new google.maps.Marker({position: verm, map: map});
+      var marker = new google.maps.Marker({position: busch, map: map});
+      var marker = new google.maps.Marker({position: morikami, map: map});
+      var marker = new google.maps.Marker({position: chicago, map: map});
+      var marker = new google.maps.Marker({position: pitt, map: map});
+      var marker = new google.maps.Marker({position: ny, map: map});
+      var marker = new google.maps.Marker({position: cornell, map: map});
+      var marker = new google.maps.Marker({position: uf, map: map});
+
+}
+
+
+function initMap() {
+    // Styles a map in dark mode.  
+    var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 40.100602, lng: -97.350521},
+        zoom: 4,
+        styles: [
+            {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+            {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+            {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+            {
+              featureType: 'administrative.locality',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#d59563'}]
+            },
+            {
+              featureType: 'poi',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#d59563'}]
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'geometry',
+              stylers: [{color: '#263c3f'}]
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#6b9a76'}]
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry',
+              stylers: [{color: '#38414e'}]
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry.stroke',
+              stylers: [{color: '#212a37'}]
+            },
+            {
+              featureType: 'road',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#9ca5b3'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'geometry',
+              stylers: [{color: '#746855'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'geometry.stroke',
+              stylers: [{color: '#1f2835'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#f3d19c'}]
+            },
+            {
+              featureType: 'transit',
+              elementType: 'geometry',
+              stylers: [{color: '#2f3948'}]
+            },
+            {
+              featureType: 'transit.station',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#d59563'}]
+            },
+            {
+              featureType: 'water',
+              elementType: 'geometry',
+              stylers: [{color: '#17263c'}]
+            },
+            {
+              featureType: 'water',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#515c6d'}]
+            },
+            {
+              featureType: 'water',
+              elementType: 'labels.text.stroke',
+              stylers: [{color: '#17263c'}]
+            }
+          ]
+    });
+    var marker = new google.maps.Marker({position: golden_gate, map: map});
+    var marker = new google.maps.Marker({position: yosemite, map: map});
+    var marker = new google.maps.Marker({position: yosemite1, map: map});
+    var marker = new google.maps.Marker({position: verm, map: map});
+    var marker = new google.maps.Marker({position: busch, map: map});
+    var marker = new google.maps.Marker({position: morikami, map: map});
+    var marker = new google.maps.Marker({position: chicago, map: map});
+    var marker = new google.maps.Marker({position: pitt, map: map});
+    var marker = new google.maps.Marker({position: ny, map: map});
+    var marker = new google.maps.Marker({position: cornell, map: map});
+    var marker = new google.maps.Marker({position: uf, map: map});
+}
+
+function populateMap() {
+  var dark_mode = getCookie("dark");
+  if (dark_mode == "yes") {
+    initMap();
+    document.body.classList.toggle("dark-mode");
+  }
+  else {
+      createMap();
+  }
+}
+function changeMap() {
+document.body.classList.toggle("dark-mode");
+var dark_mode = getCookie("dark");
+if (dark_mode == "no") {
+  initMap()
+  document.cookie = "dark=yes; path=/";
+} else if (dark_mode == "yes"){
+  createMap();
+  document.cookie = "dark=no; path=/";
+} else {
+  initMap();
+  document.cookie = "dark=yes; path=/";
+}
 }

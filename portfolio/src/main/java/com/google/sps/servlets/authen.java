@@ -36,19 +36,38 @@ import java.util.Date;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-@WebServlet("/delete")
-public class deleteAll extends HttpServlet{
+
+@WebServlet("/authen")
+public class authen extends HttpServlet {
+  GsonBuilder gsonBuilder = new GsonBuilder();
+  Gson gson = gsonBuilder.create();
+
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("application/json;");
     UserService userService = UserServiceFactory.getUserService();
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Query query = new Query("Comment");
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        PreparedQuery results = datastore.prepare(query);
-        if (userService.isUserLoggedIn() && userService.isUserAdmin()) {
-            for (Entity entity : results.asIterable()) {
-                Key key = entity.getKey();
-                datastore.delete(key);
-            }
-        }
-        response.sendRedirect("./blogs/gear.html");
+    ArrayList<String> loggedIn = new ArrayList<String>();
+    if (userService.isUserLoggedIn()) {
+      String userEmail = userService.getCurrentUser().getEmail();
+      String urlToRedirectToAfterUserLogsOut = "/blogs/gear.html";
+      String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
+      loggedIn.add("yes");
+      loggedIn.add(logoutUrl);
+      if(userService.isUserAdmin()) {
+          loggedIn.add("admin");
+      }
+      loggedIn.add("not admin");
+      loggedIn.add(userEmail);
+      
+      response.getWriter().println(gson.toJson(loggedIn));
+    } else {
+      String urlToRedirectToAfterUserLogsIn = "/blogs/gear.html";
+      String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
+      loggedIn.add("no");
+      loggedIn.add(loginUrl);
+      loggedIn.add("not admin");
+      loggedIn.add("no-email");
+      response.getWriter().println(gson.toJson(loggedIn));
     }
+  }
 }

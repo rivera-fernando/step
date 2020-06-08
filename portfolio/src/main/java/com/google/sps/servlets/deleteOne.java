@@ -47,7 +47,8 @@ public class deleteOne extends HttpServlet{
         for (Entity entity : results.asIterable()) {
             String content = (String) entity.getProperty("content");
             String name = (String) entity.getProperty("name");
-            String comparable = "[" + name + "] - " + content;
+            String email = (String) entity.getProperty("email");
+            String comparable = "[" + name + " - " + email + "] - " + content;
             
             if (text.compareTo(comparable) == 0) {
                 datastore.delete(entity.getKey());
