@@ -5,6 +5,11 @@
  */
 
  
+#map {
+  border: thin solid black;
+  height: 500px;
+}
+
 
 .materialize-red {
   background-color: #e51c23 !important;
