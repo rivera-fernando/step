@@ -45,8 +45,8 @@ public class deleteAll extends HttpServlet{
         PreparedQuery results = datastore.prepare(query);
         if (userService.isUserLoggedIn() && userService.isUserAdmin()) {
             for (Entity entity : results.asIterable()) {
-            Key key = entity.getKey();
-            datastore.delete(key);
+                Key key = entity.getKey();
+                datastore.delete(key);
             }
         }
         response.sendRedirect("./blogs/gear.html");
