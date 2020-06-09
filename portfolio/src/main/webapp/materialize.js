@@ -12616,27 +12616,29 @@ var cornell = {lat: 42.451949, lng: -76.480110};
 var uf = {lat: 29.648365, lng: -82.343895};
 
 function createMap() {
-  const map = new google.maps.Map(
-      document.getElementById('map'),
-      {center: {lat: 40.100602, lng: -97.350521}, zoom: 4});
-      var marker = new google.maps.Marker({position: golden_gate, map: map});
-      var marker = new google.maps.Marker({position: yosemite, map: map});
-      var marker = new google.maps.Marker({position: yosemite1, map: map});
-      var marker = new google.maps.Marker({position: verm, map: map});
-      var marker = new google.maps.Marker({position: busch, map: map});
-      var marker = new google.maps.Marker({position: morikami, map: map});
-      var marker = new google.maps.Marker({position: chicago, map: map});
-      var marker = new google.maps.Marker({position: pitt, map: map});
-      var marker = new google.maps.Marker({position: ny, map: map});
-      var marker = new google.maps.Marker({position: cornell, map: map});
-      var marker = new google.maps.Marker({position: uf, map: map});
-
+    mapDiv = document.getElementById('map');
+    mapDiv.innerHTML = '';
+    const map = new google.maps.Map(mapDiv, {
+        center: {lat: 40.100602, lng: -97.350521}, zoom: 4});
+        var marker = new google.maps.Marker({position: golden_gate, map: map});
+        var marker = new google.maps.Marker({position: yosemite, map: map});
+        var marker = new google.maps.Marker({position: yosemite1, map: map});
+        var marker = new google.maps.Marker({position: verm, map: map});
+        var marker = new google.maps.Marker({position: busch, map: map});
+        var marker = new google.maps.Marker({position: morikami, map: map});
+        var marker = new google.maps.Marker({position: chicago, map: map});
+        var marker = new google.maps.Marker({position: pitt, map: map});
+        var marker = new google.maps.Marker({position: ny, map: map});
+        var marker = new google.maps.Marker({position: cornell, map: map});
+        var marker = new google.maps.Marker({position: uf, map: map});
 }
 
 
 function initMap() {
     // Styles a map in dark mode.  
-    var map = new google.maps.Map(document.getElementById('map'), {
+    mapDiv = document.getElementById('map');
+    mapDiv.innerHTML = '';
+    var map = new google.maps.Map(mapDiv, {
         center: {lat: 40.100602, lng: -97.350521},
         zoom: 4,
         styles: [
