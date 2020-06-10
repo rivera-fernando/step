@@ -12620,17 +12620,17 @@ function createMap() {
     mapDiv.innerHTML = '';
     const map = new google.maps.Map(mapDiv, {
         center: {lat: 40.100602, lng: -97.350521}, zoom: 4});
-        var marker = new google.maps.Marker({position: golden_gate, map: map});
-        var marker = new google.maps.Marker({position: yosemite, map: map});
-        var marker = new google.maps.Marker({position: yosemite1, map: map});
-        var marker = new google.maps.Marker({position: verm, map: map});
-        var marker = new google.maps.Marker({position: busch, map: map});
-        var marker = new google.maps.Marker({position: morikami, map: map});
-        var marker = new google.maps.Marker({position: chicago, map: map});
-        var marker = new google.maps.Marker({position: pitt, map: map});
-        var marker = new google.maps.Marker({position: ny, map: map});
-        var marker = new google.maps.Marker({position: cornell, map: map});
-        var marker = new google.maps.Marker({position: uf, map: map});
+        var marker = new google.maps.Marker({position: golden_gate, map: map, title: 'Golden Gate'});
+        var marker = new google.maps.Marker({position: yosemite, map: map, title: "Yosemite"});
+        var marker = new google.maps.Marker({position: yosemite1, map: map, title: "Yosemite"});
+        var marker = new google.maps.Marker({position: verm, map: map, title: "Vermont"});
+        var marker = new google.maps.Marker({position: busch, map: map, title: "Busch Gardens"});
+        var marker = new google.maps.Marker({position: morikami, map: map, title: "Morikami Musuem"});
+        var marker = new google.maps.Marker({position: chicago, map: map, title: "Chicago"});
+        var marker = new google.maps.Marker({position: pitt, map: map, title: "Pittsburgh"});
+        var marker = new google.maps.Marker({position: ny, map: map, title: "New York"});
+        var marker = new google.maps.Marker({position: cornell, map: map, title: "Cornell"});
+        var marker = new google.maps.Marker({position: uf, map: map, title: "UF"}); 
 }
 
 
@@ -12828,17 +12828,17 @@ function initMap() {
         }
         ]
     });
-    var marker = new google.maps.Marker({position: golden_gate, map: map});
-    var marker = new google.maps.Marker({position: yosemite, map: map});
-    var marker = new google.maps.Marker({position: yosemite1, map: map});
-    var marker = new google.maps.Marker({position: verm, map: map});
-    var marker = new google.maps.Marker({position: busch, map: map});
-    var marker = new google.maps.Marker({position: morikami, map: map});
-    var marker = new google.maps.Marker({position: chicago, map: map});
-    var marker = new google.maps.Marker({position: pitt, map: map});
-    var marker = new google.maps.Marker({position: ny, map: map});
-    var marker = new google.maps.Marker({position: cornell, map: map});
-    var marker = new google.maps.Marker({position: uf, map: map});
+    var marker = new google.maps.Marker({position: golden_gate, map: map, title: 'Golden Gate'});
+    var marker = new google.maps.Marker({position: yosemite, map: map, title: "Yosemite"});
+    var marker = new google.maps.Marker({position: yosemite1, map: map, title: "Yosemite"});
+    var marker = new google.maps.Marker({position: verm, map: map, title: "Vermont"});
+    var marker = new google.maps.Marker({position: busch, map: map, title: "Busch Gardens"});
+    var marker = new google.maps.Marker({position: morikami, map: map, title: "Morikami Musuem"});
+    var marker = new google.maps.Marker({position: chicago, map: map, title: "Chicago"});
+    var marker = new google.maps.Marker({position: pitt, map: map, title: "Pittsburgh"});
+    var marker = new google.maps.Marker({position: ny, map: map, title: "New York"});
+    var marker = new google.maps.Marker({position: cornell, map: map, title: "Cornell"});
+    var marker = new google.maps.Marker({position: uf, map: map, title: "UF"});
 }
 
 function populateMap() {
