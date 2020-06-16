@@ -21,12 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.HashSet;
 
-
-
-
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-
       Collection<String> attendees = request.getAttendees();
       Collection<String> optional = request.getOptionalAttendees();
       long duration = request.getDuration();
@@ -36,55 +32,52 @@ public final class FindMeetingQuery {
           return Arrays.asList(TimeRange.WHOLE_DAY);
       }
       //return no availability if the meeting to schedule is longer than the day
-      else if (duration > 24*60) {
+      if (duration > 24*60) {
           return Arrays.asList();
       }
       //return whole day if there are no events at all that day
-      else if (events.size() == 0) {
+      if (events.size() == 0) {
           return Arrays.asList(TimeRange.WHOLE_DAY);
       }
       //END EDGE CASES
       //otherwise, use algo
-      else {
-          if (optional.size() > 0) {
-            ArrayList<Event> optionalPeoplesEvents = new ArrayList<>();
-            for (Event event : events) {
-                ArrayList<String> mod = new ArrayList<String>(event.getAttendees());
-                mod.retainAll(request.getAttendees());
-                if (mod.size() >= 1) {
-                    optionalPeoplesEvents.add(event);
-                }
-            }
-            for (Event event : events) {
-                ArrayList<String> mod = new ArrayList<String>(event.getAttendees());
-                mod.retainAll(request.getOptionalAttendees());
-                if (mod.size() >= 1) {
-                    optionalPeoplesEvents.add(event);
-                }
-            }
-            ArrayList<Event> merged_optional = mergeEvents(optionalPeoplesEvents);
-            Collections.sort(merged_optional);
-            if (getAvailableTimes(merged_optional,request).size() != 0 || attendees.size() == 0) {
-                return getAvailableTimes(merged_optional, request);   
-            }
-          }
-          
-          ArrayList<Event> conflicting_events = new ArrayList<>();
-          //retrieve all the events of attendees from the request
+      if (optional.size() > 0) {
+          ArrayList<Event> optionalPeoplesEvents = new ArrayList<>();
           for (Event event : events) {
-              ArrayList<String> modifier = new ArrayList<String>(event.getAttendees());
-              modifier.retainAll(request.getAttendees());
-              if (modifier.size() >= 1) {
-                  conflicting_events.add(event);
-              }
+            ArrayList<String> mod = new ArrayList<String>(event.getAttendees());
+            mod.retainAll(request.getAttendees());
+            if (mod.size() >= 1) {
+              optionalPeoplesEvents.add(event);
+            }
           }
-          //if there were none, return whole day
-          if (conflicting_events.size() == 0) {
-              return Arrays.asList(TimeRange.WHOLE_DAY);
+          for (Event event : events) {
+            ArrayList<String> mod = new ArrayList<String>(event.getAttendees());
+            mod.retainAll(request.getOptionalAttendees());
+            if (mod.size() >= 1) {
+              optionalPeoplesEvents.add(event);
+            }
           }
-          ArrayList<Event> merged_events = mergeEvents(conflicting_events);
-          return getAvailableTimes(merged_events, request); 
+          ArrayList<Event> merged_optional = mergeEvents(optionalPeoplesEvents);
+          Collections.sort(merged_optional);
+          if (getAvailableTimes(merged_optional,request).size() != 0 || attendees.size() == 0) {
+            return getAvailableTimes(merged_optional, request);   
+          }
       }
+      ArrayList<Event> conflicting_events = new ArrayList<>();
+      //retrieve all the events of attendees from the request
+      for (Event event : events) {
+        ArrayList<String> modifier = new ArrayList<String>(event.getAttendees());
+        modifier.retainAll(request.getAttendees());
+        if (modifier.size() >= 1) {
+          conflicting_events.add(event);
+        }
+      }
+      //if there were none, return whole day
+      if (conflicting_events.size() == 0) {
+        return Arrays.asList(TimeRange.WHOLE_DAY);
+      }
+      ArrayList<Event> merged_events = mergeEvents(conflicting_events);
+      return getAvailableTimes(merged_events, request); 
   }
 
   public ArrayList<Event> mergeEvents(ArrayList<Event> conflicting_events) {
