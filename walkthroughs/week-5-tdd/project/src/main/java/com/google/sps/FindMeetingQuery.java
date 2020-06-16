@@ -110,19 +110,18 @@ public final class FindMeetingQuery {
         potential.add(TimeRange.fromStartEnd(merged_events.get(0).getWhen().end(), 24*60, false));
       }
       else {
-      
-      for (int i = 0; i < merged_events.size(); i++) {
-        if (i == 0) {
-            potential.add(TimeRange.fromStartEnd(0, merged_events.get(i).getWhen().start(), false));
+        for (int i = 0; i < merged_events.size(); i++) {
+            if (i == 0) {
+                potential.add(TimeRange.fromStartEnd(0, merged_events.get(i).getWhen().start(), false));
+            }
+            else if (i == merged_events.size() - 1) {
+                potential.add(TimeRange.fromStartEnd(merged_events.get(i-1).getWhen().end(), merged_events.get(i).getWhen().start(), false));
+                potential.add(TimeRange.fromStartEnd(merged_events.get(i).getWhen().end(), 24*60, false));
+            }
+            else {
+                potential.add(TimeRange.fromStartEnd(merged_events.get(i-1).getWhen().end(), merged_events.get(i).getWhen().start(), false));
+            }
         }
-        else if (i == merged_events.size() - 1) {
-            potential.add(TimeRange.fromStartEnd(merged_events.get(i-1).getWhen().end(), merged_events.get(i).getWhen().start(), false));
-            potential.add(TimeRange.fromStartEnd(merged_events.get(i).getWhen().end(), 24*60, false));
-        }
-        else {
-            potential.add(TimeRange.fromStartEnd(merged_events.get(i-1).getWhen().end(), merged_events.get(i).getWhen().start(), false));
-        }
-      }
       }
       for (TimeRange time : potential) {
         if(time.duration() != 0 && time.duration() >= request.getDuration()) {
