@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Enumeration;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
@@ -41,28 +43,7 @@ public final class FindMeetingQuery {
       }
       //END EDGE CASES
       //otherwise, use algo
-      if (optional.size() > 0) {
-          ArrayList<Event> optionalPeoplesEvents = new ArrayList<>();
-          for (Event event : events) {
-            ArrayList<String> mod = new ArrayList<String>(event.getAttendees());
-            mod.retainAll(request.getAttendees());
-            if (mod.size() >= 1) {
-              optionalPeoplesEvents.add(event);
-            }
-          }
-          for (Event event : events) {
-            ArrayList<String> mod = new ArrayList<String>(event.getAttendees());
-            mod.retainAll(request.getOptionalAttendees());
-            if (mod.size() >= 1) {
-              optionalPeoplesEvents.add(event);
-            }
-          }
-          ArrayList<Event> merged_optional = mergeEvents(optionalPeoplesEvents);
-          Collections.sort(merged_optional);
-          if (getAvailableTimes(merged_optional,request).size() != 0 || attendees.size() == 0) {
-            return getAvailableTimes(merged_optional, request);   
-          }
-      }
+
       ArrayList<Event> conflicting_events = new ArrayList<>();
       //retrieve all the events of attendees from the request
       for (Event event : events) {
@@ -72,12 +53,54 @@ public final class FindMeetingQuery {
           conflicting_events.add(event);
         }
       }
-      //if there were none, return whole day
-      if (conflicting_events.size() == 0) {
-        return Arrays.asList(TimeRange.WHOLE_DAY);
+      Collections.sort(conflicting_events);
+      ArrayList<Event> merged = mergeEvents(conflicting_events);
+      if (optional.size() > 0) {
+          int slots = getAvailableTimes(conflicting_events, request).size();
+          for (Enumeration optionals = optionalPeople(events, optional); optionals.hasMoreElements() ;) {
+              ArrayList<String> name = new ArrayList<>();
+              name.add((String)optionals.nextElement());
+              ArrayList<Event> temporary = new ArrayList<>();
+              for (Event event : conflicting_events) {
+                  temporary.add(event);
+              }
+              for (Event event : events) {
+                  ArrayList<String> modifier = new ArrayList<String>(event.getAttendees());
+                  modifier.retainAll(name);
+                  if (modifier.size() >= 1) {
+                    temporary.add(event);
+                  }
+              }
+              merged = mergeEvents(temporary);
+              Collections.sort(merged);
+              if (getAvailableTimes(merged, request).size() != 0) {
+                conflicting_events = merged;
+              }
+          }
       }
-      ArrayList<Event> merged_events = mergeEvents(conflicting_events);
-      return getAvailableTimes(merged_events, request); 
+      if (conflicting_events.size() == 0) {
+          if (optional.size() == 0)
+            return Arrays.asList(TimeRange.WHOLE_DAY);
+          else
+            return Arrays.asList();
+      }
+      return getAvailableTimes(conflicting_events, request);
+  }
+
+  public Enumeration optionalPeople(Collection<Event> events, Collection<String> optional) {
+      Hashtable<String, Integer> dict = new Hashtable<String, Integer>();
+      for(String person : optional) {
+          dict.put(person, 0);
+      }
+      for(Event event : events) {
+          ArrayList<String> modifier = new ArrayList<String>(event.getAttendees());
+          modifier.retainAll(optional); //modifier at this point is a list of the people that are optional that have this event
+          for (String person : modifier) {
+              Integer count = dict.get(person);
+              dict.put(person, count+event.getWhen().duration());
+          }
+      }
+      return dict.keys();
   }
 
   public ArrayList<Event> mergeEvents(ArrayList<Event> conflicting_events) {
@@ -90,7 +113,7 @@ public final class FindMeetingQuery {
           }
       }
       for (Event event: events_contained_by_others) {
-          conflicting_events.remove(event);
+          conflicting_events.remove(event) ;
       }
       return conflicting_events;
   }
