@@ -57,9 +57,9 @@ public final class FindMeetingQuery {
       ArrayList<Event> merged = mergeEvents(conflicting_events);
       if (optional.size() > 0) {
           int slots = getAvailableTimes(conflicting_events, request).size();
-          for (Enumeration orderedOptional = orderOptionalPeople(events, optional); orderedOptional.hasMoreElements() ;) {
+          for (Enumeration optionals = optionalPeople(events, optional); optionals.hasMoreElements() ;) {
               ArrayList<String> name = new ArrayList<>();
-              name.add((String)orderedOptional.nextElement());
+              name.add((String)optionals.nextElement());
               ArrayList<Event> temporary = new ArrayList<>();
               for (Event event : conflicting_events) {
                   temporary.add(event);
@@ -87,7 +87,7 @@ public final class FindMeetingQuery {
       return getAvailableTimes(conflicting_events, request);
   }
 
-  public Enumeration orderOptionalPeople(Collection<Event> events, Collection<String> optional) {
+  public Enumeration optionalPeople(Collection<Event> events, Collection<String> optional) {
       Hashtable<String, Integer> dict = new Hashtable<String, Integer>();
       for(String person : optional) {
           dict.put(person, 0);
